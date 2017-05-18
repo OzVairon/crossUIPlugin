@@ -1,8 +1,13 @@
 <idea-plugin version="2">
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>com.ozv.crossUI.crossUIPlugin</id>
+  <name>CrossUIPlugin</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="vairon3004@gmail.com">OZV</vendor>
+  <!--
+  <depends>org.jetbrsins.android</depends>
+  <depends>org.jetbrains.plugins.gradle</depends>
+  <depends>com.intellij.properties</depends>
+  -->
 
   <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -30,6 +35,9 @@
 
   <actions>
     <!-- Add your actions here -->
+    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="simpleAction">
+      <add-to-group group-id="NewGroup" anchor="first"/>
+    </action>
   </actions>
 
 </idea-plugin>
