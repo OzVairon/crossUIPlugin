@@ -49,14 +49,16 @@ public class ScreenDialog extends JDialog {
     }
 
     private void onCancel() {
-// add your code here if necessary
         dispose();
     }
 
     public static void showDialog() {
         ScreenDialog dialog = new ScreenDialog();
+        dialog.setTitle("Screen Wizard");
         dialog.pack();
-
+        dialog.setLocationRelativeTo(dialog.getParent());
         dialog.setVisible(true);
     }
+
+
 }

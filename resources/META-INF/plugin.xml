@@ -35,7 +35,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="simpleAction">
+    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="simpleAction" icon="iconNewScreen.png">
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
   </actions>
