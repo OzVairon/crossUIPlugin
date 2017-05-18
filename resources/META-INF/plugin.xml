@@ -1,5 +1,5 @@
 <idea-plugin version="2">
-  <id>com.ozv.crossUI.crossUIPlugin</id>
+  <id>com.ozv.crossUIPlugin</id>
   <name>CrossUIPlugin</name>
   <version>1.0</version>
   <vendor email="vairon3004@gmail.com">OZV</vendor>
@@ -34,8 +34,14 @@
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
-    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="simpleAction" icon="iconNewScreen.png">
+    <!-- Add your actions here --><!--
+    <action id="com.ozv.crossUIPlugin.SimpleAction"
+            class="com.ozv.crossUIPlugin.SimpleAction"
+            text="crossUI Screen">
+      <add-to-group group-id="NewGroup" anchor="first"/>
+    </action>
+    -->
+    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="CrossUI Screen">
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
   </actions>
