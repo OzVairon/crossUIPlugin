@@ -3,6 +3,7 @@ package com.ozv.crossUIPlugin;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Created by ozvairon on 19.05.17.
@@ -12,7 +13,10 @@ public class ClassCreator {
     public static void createNewClass(String dir, String packageName, String className, String screenName) {
 
         String template = "";
-        try(FileReader reader = new FileReader("ScreenTemplate"))
+        URL url = ClassCreator.class.getResource("templates/ScreenTemplate");
+
+
+        try (FileReader reader = new FileReader(url.getFile()))
         {
             int c;
             while((c=reader.read())!=-1){

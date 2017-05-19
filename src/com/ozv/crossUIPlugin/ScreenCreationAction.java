@@ -13,7 +13,7 @@ import java.io.File;
 /**
  * Created by ozvairon on 18.05.17.
  */
-public class SimpleAction extends AnAction {
+public class ScreenCreationAction extends AnAction {
 
     Icon icon;
 
@@ -31,11 +31,10 @@ public class SimpleAction extends AnAction {
         }
 
 
-
         DataContext context = anActionEvent.getDataContext();
-        IdeView view = (IdeView)LangDataKeys.IDE_VIEW.getData(context);
+        IdeView view = LangDataKeys.IDE_VIEW.getData(context);
         if(view != null) {
-            Project project = (Project)CommonDataKeys.PROJECT.getData(context);
+            Project project = CommonDataKeys.PROJECT.getData(context);
             if(project != null) {
                 final PsiDirectory directory = view.getOrChooseDirectory();
                 if(directory != null) {

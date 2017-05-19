@@ -35,13 +35,13 @@
 
   <actions>
     <!-- Add your actions here --><!--
-    <action id="com.ozv.crossUIPlugin.SimpleAction"
-            class="com.ozv.crossUIPlugin.SimpleAction"
+    <action id="com.ozv.crossUIPlugin.ScreenCreationActiononAction"
+            class="com.ozv.crossUIPlugin.ScreenCreationActiononAction"
             text="crossUI Screen">
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
     -->
-    <action id="com.ozv.crossUIPlugin.SimpleAction" class="com.ozv.crossUIPlugin.SimpleAction" text="CrossUI Screen">
+    <action id="com.ozv.crossUIPlugin.ScreenCreationAction" class="com.ozv.crossUIPlugin.ScreenCreationAction" text="CrossUI Screen">
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
   </actions>
