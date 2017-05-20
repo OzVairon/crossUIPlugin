@@ -56,7 +56,7 @@ public class ProjectCreator {
 
             if (unpackProject()) {
                 prepareFiles();
-//                openProject();
+                openProject();
             } else {
                 System.out.println("Fail to unpack project");
             }
@@ -179,7 +179,13 @@ public class ProjectCreator {
     private void fixConfigFiles()  {
         String[] files = {
                 "android/build.gradle",
-                "ios/robovm.properties"
+                "android/AndroidManifest.xml",
+                "android/assets/appconfig.xml",
+                "android/res/values/strings.xml",
+                "desktop/build.gradle",
+                "ios/robovm.properties",
+                "build.gradle"
+
         };
 
         for (String filepath : files) {

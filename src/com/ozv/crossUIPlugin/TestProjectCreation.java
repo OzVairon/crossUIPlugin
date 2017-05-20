@@ -2,8 +2,6 @@ package com.ozv.crossUIPlugin;
 
 import com.ozv.crossUIPlugin.projectCreation.ProjectCreator;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by ozvairon on 20.05.17.
  */
@@ -16,24 +14,23 @@ public class TestProjectCreation {
 
         boolean pPack = false;
         boolean fPack = false;
-        pPack = true;
+        //pPack = true;
         //fPack = true;
 
         if (fPack) {
             JarPacker.main(null);
+            System.out.println("jar was packed");
         }
 
 
         if (pPack) {
             FrameworkPacker.main(null);
             System.out.println("framework was packed");
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
-        System.out.println("project creation");
-        ProjectCreator.createProject(dir, name, pcg);
+
+        if (!(pPack || fPack)) {
+            System.out.println("project creation");
+            ProjectCreator.createProject(dir, name, pcg);
+        }
     }
 }

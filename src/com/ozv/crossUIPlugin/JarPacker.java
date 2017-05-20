@@ -35,7 +35,7 @@ public class JarPacker {
 
             FileUtils.cleanOutputDir(temp);
 
-            temp = new File(temporaryDir + "/com");
+            temp = new File(temporaryDir + "/com/");
             temp.mkdir();
             FileUtils.copyDirectory(inp, temp);
 
@@ -54,7 +54,8 @@ public class JarPacker {
 
         Manifest manifest = new Manifest();
         manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-        JarOutputStream target = new JarOutputStream(new FileOutputStream(outputJar));
+        manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, temporaryDir);
+        JarOutputStream target = new JarOutputStream(new FileOutputStream(outputJar), manifest);
         add(new File(temporaryDir + "/com"), target);
         target.close();
     }

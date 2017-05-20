@@ -1,4 +1,4 @@
-<app package="com.ozv.crossui">
+<app package="$<PACKAGE_NAME>">
     <mainscreen name = "MainScreen" />
     <colors>
         <color name="MAIN"                  value="aa0000"/>
