@@ -15,32 +15,35 @@ public class ClassCreator {
 
     void createNewClass(String dir, String packageName, String name) {
 
-        String template = "";
-        try(FileReader reader = new FileReader("ScreenTemplate"))
-        {
-            int c;
-            while((c=reader.read())!=-1){
-                template += (char)c;
+        String path = ClassCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        path += ClassCreator.class.getPackage().getName().replace('.', '/');
+        path = path.substring(0, path.lastIndexOf('/'));
+
+
+        if (true) {
+            String template = "";
+            try (FileReader reader = new FileReader(path + "/template/ScreenTemplate")) {
+                int c;
+                while ((c = reader.read()) != -1) {
+                    template += (char) c;
+                }
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
             }
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
 
-        template = template.replaceAll("\\$<CLASS_NAME>", name);
-        template = template.replaceAll("\\$<PACKAGE_NAME>", packageName);
-        template = template.replaceAll("\\$<SCREEN_NAME>", name);
+            template = template.replaceAll("\\$<CLASS_NAME>", name);
+            template = template.replaceAll("\\$<PACKAGE_NAME>", packageName);
+            template = template.replaceAll("\\$<SCREEN_NAME>", name);
 
-        try(FileWriter writer = new FileWriter(dir + "/" + name +".java", false))
-        {
-            // запись всей строки
+            try (FileWriter writer = new FileWriter(dir + "/" + name + ".java", false)) {
+                // запись всей строки
 
-            writer.write(template);
-            writer.flush();
-        }
-        catch(IOException ex){
+                writer.write(template);
+                writer.flush();
+            } catch (IOException ex) {
 
-            System.out.println(ex.getMessage());
+                System.out.println(ex.getMessage());
+            }
         }
 
 

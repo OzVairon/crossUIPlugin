@@ -41,8 +41,12 @@
       <add-to-group group-id="NewGroup" anchor="first"/>
     </action>
     -->
-    <action id="com.ozv.crossUIPlugin.ScreenCreationAction" class="com.ozv.crossUIPlugin.ScreenCreationAction" text="CrossUI Screen">
+    <action id="com.ozv.crossUIPlugin.screenCreation.ScreenCreationAction" class="com.ozv.crossUIPlugin.screenCreation.ScreenCreationAction" text="CrossUI Screen">
       <add-to-group group-id="NewGroup" anchor="first"/>
+    </action>
+    <action id="com.ozv.crossUIPlugin.projectCreation.ProjectCreationAction" class="com.ozv.crossUIPlugin.projectCreation.ProjectCreationAction"
+            text="CrossUI Project">
+      <add-to-group group-id="NewProjectOrModuleGroup" anchor="first"/>
     </action>
   </actions>
 
