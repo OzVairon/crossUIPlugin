@@ -5,24 +5,23 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.io.File;
 
 public class ProjectDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField classField;
+    private JTextField projectNameField;
     private TextFieldWithBrowseButton folderChooser;
-    private JTextField comUserMycrossuiTextField;
-    private JTextField debug;
-    private JButton button1;
+    private JTextField packageNameField;
+    private JProgressBar progressBar;
 
     public ProjectDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        progressBar.setVisible(false);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,68 +59,42 @@ public class ProjectDialog extends JDialog {
                 descriptor
         );
 
-        folderChooser.setText(System.getProperty("user.home"));
-
-        buttonOK.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                File projectDir = new File(folderChooser.getText());
-                if (!projectDir.exists()) {
-                    projectDir.mkdir();
-                }
-                if (projectDir.isDirectory()) {
-
-                    String path = ProjectDialog.class.getResource("ProjectDialog.class").getFile();
-                    path = path.substring(0, path.lastIndexOf('/'));
-                    path = path.substring(0, path.lastIndexOf('/')) + "/templates/picture.zip";
-
-                    try {
-                        File zipFile = new File(path);
-
-                        ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
-                        ZipEntry ze = zis.getNextEntry();
-                        byte[] buffer = new byte[1024];
-
-                        while(ze!=null){
-
-                            String fileName = ze.getName();
-                            File newFile = new File(projectDir + File.separator + fileName);
-
-                            System.out.println("file unzip : "+ newFile.getAbsoluteFile());
-                            new File(newFile.getParent()).mkdirs();
-
-                            FileOutputStream fos = new FileOutputStream(newFile);
-
-                            int len;
-                            while ((len = zis.read(buffer)) > 0) {
-                                fos.write(buffer, 0, len);
-                            }
-
-                            fos.close();
-                            ze = zis.getNextEntry();
-                        }
-
-                        zis.closeEntry();
-                        zis.close();
-
-                        System.out.println("Done");
-
-
-                    } catch (FileNotFoundException e2) {
-
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-
-                }
-            }
-        });
+        folderChooser.setText(System.getProperty("user.home") + "/Projects/CrossUIDemo/MyProj");
 
     }
 
     private void onOK() {
-// add your code here
-        dispose();
+        //todo: Field check
+        try {
+
+            File projectDir = new File(folderChooser.getText());
+
+            if (projectDir.isDirectory()) {
+                lockEdit();
+                progressBar.setVisible(true);
+                progressBar.setIndeterminate(true);
+
+                Thread tr = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            ProjectCreator.createProject(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
+                            dispose();
+                        } catch (Exception ex) {
+                            unlockEdit();
+                            progressBar.setVisible(false);
+                        }
+                    }
+                });
+                tr.run();
+
+
+            } else {
+                System.out.println(projectDir.getAbsolutePath());
+                System.out.println("it is not directory");
+            }
+        } catch (Exception ex) {ex.printStackTrace();}
+
     }
 
     private void onCancel() {
@@ -136,4 +109,21 @@ public class ProjectDialog extends JDialog {
         dialog.setLocationRelativeTo(dialog.getParent());
         dialog.setVisible(true);
     }
+
+    private void lockEdit() {
+        projectNameField.setEnabled(false);
+        packageNameField.setEnabled(false);
+        folderChooser.setEnabled(false);
+        buttonOK.setEnabled(false);
+        buttonCancel.setEnabled(false);
+    }
+
+    private void unlockEdit() {
+        projectNameField.setEnabled(true);
+        packageNameField.setEnabled(true);
+        folderChooser.setEnabled(true);
+        buttonOK.setEnabled(true);
+        buttonCancel.setEnabled(true);
+    }
+
 }

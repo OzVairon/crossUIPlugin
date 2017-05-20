@@ -1,5 +1,7 @@
 package com.ozv.crossUIPlugin.screenCreation;
 
+import com.ozv.crossUIPlugin.ClassCreator;
+
 import javax.swing.*;
 import java.awt.event.*;
 

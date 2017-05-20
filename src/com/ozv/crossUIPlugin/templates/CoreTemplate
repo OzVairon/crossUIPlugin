@@ -1,0 +1,19 @@
+package $<PACKAGE_NAME>;
+
+import com.idp.engine.App;
+
+public class $<CLASS_NAME> extends App {
+
+	@Override
+	public void create() {
+		super.create();
+	}
+
+	/**
+	 * @return current app instance
+	 */
+	public static $<CLASS_NAME> getInstance() {
+		return ($<CLASS_NAME>) instance;
+	}
+
+}
