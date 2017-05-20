@@ -14,13 +14,21 @@ public class TestProjectCreation {
         String pcg = "com.user.crossui";
         String name = "NewCrossUI";
 
-        boolean pack = false;
-        //pack = true;
-        if (pack) {
+        boolean pPack = false;
+        boolean fPack = false;
+        pPack = true;
+        //fPack = true;
+
+        if (fPack) {
+            JarPacker.main(null);
+        }
+
+
+        if (pPack) {
             FrameworkPacker.main(null);
             System.out.println("framework was packed");
             try {
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

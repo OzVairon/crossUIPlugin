@@ -29,7 +29,7 @@ public class FrameworkPacker {
     }
 
     private List<String> fileList = new ArrayList<String>();
-    private static final String OUTPUT_ZIP_FILE = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/templates/crossUI.zip";
+    private static final String OUTPUT_ZIP_FILE = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/templates/crossUIProject.zip";
     private static final String SOURCE_FOLDER = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/templates/crossUI"; // SourceFolder path
 
 
