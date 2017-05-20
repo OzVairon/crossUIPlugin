@@ -11,12 +11,17 @@ public class ScreenDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField classField;
     private JTextField screenField;
-    private JTextField debug;
+    private JLabel pathLabel;
 
     public ScreenDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        if (path.length() > 50) {
+            pathLabel.setText("..." + path.substring(path.length() - 50));
+        } else {
+            pathLabel.setText(path);
+        }
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -47,6 +52,7 @@ public class ScreenDialog extends JDialog {
     }
 
     private void onOK() {
+        //todo: add Fields check;
         createNewClassFile();
         dispose();
     }
@@ -70,7 +76,7 @@ public class ScreenDialog extends JDialog {
         String className = classField.getText();
         String screenName = screenField.getText();
 
-        ClassCreator.createNewClass(path, packageName, className, screenName, debug.getText());
+        ClassCreator.createNewClass(path, packageName, className, screenName, "ScreenTemplate");
     }
 
     private static String path = "";

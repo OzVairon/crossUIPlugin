@@ -1,5 +1,6 @@
 package com.ozv.crossUIPlugin;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,10 +17,9 @@ public class ClassCreator {
         //String path = ClassCreator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         String path = ClassCreator.class.getResource("ClassCreator.class").getFile();
-        path = path.substring(0, path.lastIndexOf('/'));
         path = path.substring(0, path.lastIndexOf('/')) + "/templates/" + templateName;
 
-        System.out.println(path);
+        //System.out.println(path);
         try (FileReader reader = new FileReader(path))
         {
             int c;
@@ -28,14 +28,17 @@ public class ClassCreator {
             }
         }
         catch(IOException ex){
-            System.out.println("CANNOT FIND TEMPLATE");
+            System.out.println("CANNOT FIND TEMPLATE: " + path);
         }
 
         template = template.replaceAll("\\$<CLASS_NAME>", className);
         template = template.replaceAll("\\$<PACKAGE_NAME>", packageName);
         template = template.replaceAll("\\$<SCREEN_NAME>", screenName);
 
-        try(FileWriter writer = new FileWriter( dir +"/"+ className +".java", false))
+        File srcDir = new File(dir);
+        if (!srcDir.exists()) srcDir.mkdir();
+
+        try(FileWriter writer = new FileWriter( dir +"/"+ className +".java", true))
         {
             writer.write(template);
             writer.flush();

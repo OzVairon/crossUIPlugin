@@ -2,6 +2,8 @@ package com.ozv.crossUIPlugin.projectCreation;
 
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.util.ArrayUtil;
+import com.ozv.crossUIPlugin.ClassCreator;
 import org.jdom.JDOMException;
 
 import java.io.File;
@@ -49,7 +51,7 @@ public class ProjectCreator {
         try {
             if (unpackProject()) {
                 prepareFiles();
-                //openProject();
+//                openProject();
             } else {
                 System.out.println("Fail to unpack project");
             }
@@ -134,8 +136,35 @@ public class ProjectCreator {
 
 
         String packageDir = packageName.replace('.','/') + "/";
+        String[] packageFolders = packageName.split("\\.");
 
+
+
+        //prepare modules
         String[] modules = {"core", "android", "desktop", "ios"};
+        for (String module : modules) {
+            String moduleDir = projectDirectory + "";
+            String[] mf = {module, "src"};
+
+
+            String[] dirArr = (String[]) ArrayUtil.mergeArrays(mf, packageFolders);
+
+            for (String p : dirArr) {
+                moduleDir += p + "/";
+                System.out.println(moduleDir);
+                File f = new File(moduleDir);
+                f.mkdir();
+            }
+
+
+            String className = "";
+            if (module.equals("core")) {
+                className = projectName;
+            } else className = module.substring(0,1).toUpperCase() + module.substring(1) + "Launcher";
+
+            ClassCreator.createNewClass(moduleDir, packageName, className, projectName, module + "Template");
+        }
+
 
 
 
