@@ -2,18 +2,19 @@ package com.ozv.crossUIPlugin;
 
 import com.android.utils.FileUtils;
 
-import java.io.*;
-import java.util.jar.Attributes;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
 
 /**
  * Created by ozvairon on 20.05.17.
  */
 public class JarPacker {
 
-    private String inputDir = "/Users/ozvairon/Projects/crossUI/CrossUIapp/core/src/com/";
+    private String inputDir = "/Users/ozvairon/Projects/crossUI/CrossUIapp/core/build/classes/main/com";
 
     private String temporaryDir = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/temp";
 
@@ -52,12 +53,12 @@ public class JarPacker {
     {
         if (!prepareFiles()) return;
 
-        Manifest manifest = new Manifest();
-        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-        manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, temporaryDir);
-        JarOutputStream target = new JarOutputStream(new FileOutputStream(outputJar), manifest);
-        add(new File(temporaryDir + "/com"), target);
-        target.close();
+//        Manifest manifest = new Manifest();
+//        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+//        manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, temporaryDir);
+//        JarOutputStream target = new JarOutputStream(new FileOutputStream(outputJar), manifest);
+//        add(new File(temporaryDir + "/com"), target);
+//        target.close();
     }
 
     private void add(File source, JarOutputStream target) throws IOException
