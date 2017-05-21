@@ -5,10 +5,15 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.util.ArrayUtil;
 import com.ozv.crossUIPlugin.ClassCreator;
+import com.ozv.crossUIPlugin.ErrorNotifier;
+import com.ozv.crossUIPlugin.ResourceLoader;
 import com.ozv.crossUIPlugin.screenCreation.ScreenDialog;
 import org.jdom.JDOMException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Enumeration;
@@ -54,9 +59,18 @@ public class ProjectCreator {
             this.projectDirectory += '/';
         }
 
-        resources = ProjectCreator.class.getResource("ProjectCreator.class").getFile();
-        resources = resources.substring(0, resources.lastIndexOf('/'));
-        resources = resources.substring(0, resources.lastIndexOf('/')) + "/templates/";
+        ErrorNotifier.setOutDir(this.projectDirectory);
+        ResourceLoader.setTempDir(this.projectDirectory);
+        try {
+            resources = ProjectCreator.class.getResource("ProjectCreator.class").getPath();
+            resources = resources.substring(0, resources.lastIndexOf('/'));
+            resources = resources.substring(0, resources.lastIndexOf('/')) + "/templates/";
+            if (resources.startsWith("file:")) resources = resources.substring(5);
+
+            ErrorNotifier.push(ErrorNotifier.MESSAGE, "resourcesError", resources);
+        } catch (Exception ex){
+            ErrorNotifier.push(ErrorNotifier.ERROR, ex.getMessage(), ex.getStackTrace());
+        }
     }
 
     public static void createProject(String projectDirectory, String projectName, String packageName) throws IOException {
@@ -97,7 +111,8 @@ public class ProjectCreator {
 
         try {
             // Open the zip file
-            ZipFile zipFile = new ZipFile(path);
+            //ZipFile zipFile = new ZipFile(path);
+            ZipFile zipFile = new ZipFile(ResourceLoader.loadFile("crossUIProject.zip"));
             Enumeration<?> enu = zipFile.entries();
             while (enu.hasMoreElements()) {
                 ZipEntry zipEntry = (ZipEntry) enu.nextElement();
@@ -133,6 +148,9 @@ public class ProjectCreator {
             zipFile.close();
             result = true;
         } catch (IOException e) {
+
+            ErrorNotifier.push(ErrorNotifier.ERROR, e.getMessage(), e.getStackTrace());
+            ErrorNotifier.push(ErrorNotifier.ERROR, "Cannot find zip", path);
             e.printStackTrace();
         }
 
@@ -159,7 +177,6 @@ public class ProjectCreator {
             createSourceFiles(module);
             integrateFramework(module);
         }
-
         fixConfigFiles();
     }
 
@@ -242,7 +259,9 @@ public class ProjectCreator {
     }
 
     private void integrateFramework(String module) throws IOException {
-        File frameworkJar = new File(resources + "crossUIlib.jar");
+        //File frameworkJar = new File(resources + "crossUIlib.jar");
+        File frameworkJar = ResourceLoader.loadFile("crossUIlib.jar");
+
         File moduleLib = new File(projectDirectory + module + "/libs");
 
         if (!moduleLib.exists()) moduleLib.mkdir();

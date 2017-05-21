@@ -14,46 +14,27 @@ public class ClassCreator {
 
         String template = "";
 
-        String templatePath = ClassCreator.class.getResource("ClassCreator.class").getFile();
+        String templatePath = ClassCreator.class.getResource("ClassCreator.class").getPath();
         templatePath = templatePath.substring(0, templatePath.lastIndexOf('/')) + "/templates/" + templateName;
         checkDir(dir);
 
-//
-//        try (FileReader reader = new FileReader(path))
-//        {
-//            int c;
-//            while((c=reader.read())!=-1){
-//                template += (char)c;
-//            }
-//        }
-//        catch(IOException ex){
-//            System.out.println("CANNOT FIND TEMPLATE: " + path);
-//        }
+        templatePath = ResourceLoader.loadFile(templateName).getPath();
 
         try {
-            template = new String(Files.readAllBytes(new File(templatePath).toPath()));
+            //template = new String(Files.readAllBytes(new File(templatePath).toPath()));
+            template = new String(Files.readAllBytes(ResourceLoader.loadFile(templateName).toPath()));
             template = template.replaceAll("\\$<CLASS_NAME>", className);
             template = template.replaceAll("\\$<PACKAGE_NAME>", packageName);
             template = template.replaceAll("\\$<SCREEN_NAME>", screenName);
             File outFile = new File(dir +"/"+ className +".java");
             Files.write(outFile.toPath(), template.getBytes(), StandardOpenOption.CREATE_NEW);
         } catch (IOException e) {
+            ErrorNotifier.push(ErrorNotifier.ERROR, "cannot find template", templateName);
+            ErrorNotifier.push(ErrorNotifier.ERROR, e.getMessage(), e.getStackTrace());
             e.printStackTrace();
         }
 
 
-//        File srcDir = new File(dir);
-//        if (!srcDir.exists()) srcDir.mkdir();
-//
-//        try(FileWriter writer = new FileWriter( dir +"/"+ className +".java", true))
-//        {
-//            writer.write(template);
-//            writer.flush();
-//
-//        }
-//        catch(IOException ex){
-//            System.out.println(ex.getMessage());
-//        }
     }
 
     private static void checkDir(String dir) {
