@@ -92,6 +92,3 @@ project(":ios") {
         compile "de.tomgrill.gdxdialogs:gdx-dialogs-ios:1.2.0"
     }
 }
-tasks.eclipse.doLast {
-    delete ".project"
-}

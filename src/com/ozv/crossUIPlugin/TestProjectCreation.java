@@ -9,7 +9,7 @@ public class TestProjectCreation {
     public static void main(String[] args) {
 
         String dir = "/Users/ozvairon/Projects/CrossUIDemo/MyProj/";
-        String pcg = "com.user.crossui";
+        String pcg = "com.user.....crossui";
         String name = "NewCrossUI";
 
         boolean pPack = false;
@@ -19,18 +19,16 @@ public class TestProjectCreation {
 
         if (fPack) {
             JarPacker.main(null);
-            System.out.println("jar was packed");
         }
 
 
         if (pPack) {
             FrameworkPacker.main(null);
-            System.out.println("framework was packed");
         }
 
         if (!(pPack || fPack)) {
             System.out.println("project creation");
-            ProjectCreator.createProject(dir, name, pcg);
+            ProjectCreator.createProject(dir, name, pcg, false);
         }
     }
 }

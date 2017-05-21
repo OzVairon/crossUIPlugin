@@ -1,10 +1,12 @@
 package com.ozv.crossUIPlugin.projectCreation;
 
 import com.android.utils.FileUtils;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.util.ArrayUtil;
 import com.ozv.crossUIPlugin.ClassCreator;
+import com.ozv.crossUIPlugin.screenCreation.ScreenDialog;
 import org.jdom.JDOMException;
 
 import java.io.File;
@@ -25,13 +27,32 @@ public class ProjectCreator {
     private String projectDirectory;
     private String projectName;
     private String packageName;
+    private String packagepath;
+    private boolean pluginMode = true;
 
     private String resources;
 
     public ProjectCreator(String projectDirectory, String projectName, String packageName) {
-        this.packageName = packageName;
         this.projectDirectory = projectDirectory;
-        this.projectName = projectName;
+
+        this.packageName = packageName.replaceAll("[~\"#%&*:;<>?/{|} ,\\\\]" , "");
+
+        String[] p = this.packageName.split("\\.");
+        this.packageName = "";
+        for (int i = 0; i < p.length; i++) {
+            if (p[i].length() != 0) {
+                this.packageName += p[i];
+                if (i < p.length - 1) {
+                    this.packageName +=".";
+                }
+            }
+        }
+
+        this.projectName = projectName.replaceAll("[~\"#%&*:;<>?/{|}. ,\\\\]" , "");
+        this.projectName = this.projectName.trim();
+        this.projectName = this.projectName.substring(0, 1).toUpperCase() + this.projectName.substring(1);
+        this.packagepath = this.packageName.replaceAll("\\.","/");
+
 
         if (this.projectDirectory.lastIndexOf('/') != this.projectDirectory.length()-1) {
             this.projectDirectory += '/';
@@ -42,27 +63,37 @@ public class ProjectCreator {
         resources = resources.substring(0, resources.lastIndexOf('/')) + "/templates/";
     }
 
-    public static void createProject(String projectDirectory, String projectName, String packageName) {
+    public static void createProject(String projectDirectory, String projectName, String packageName) throws IOException {
         ProjectCreator creator = new ProjectCreator(projectDirectory, projectName, packageName);
         creator.start();
     }
 
-    public void start() {
+    public static void createProject(String projectDirectory, String projectName, String packageName, boolean open) {
+        ProjectCreator creator = new ProjectCreator(projectDirectory, projectName, packageName);
+        creator.pluginMode = open;
         try {
-            System.out.println("Start creating project \"" + projectName + "\"");
-
-            FileUtils.cleanOutputDir(new File(projectDirectory));
-            System.out.println("Copy project files into directory: " + projectDirectory);
-
-            if (unpackProject()) {
-                prepareFiles();
-                openProject();
-            } else {
-                System.out.println("Fail to unpack project");
-            }
+            creator.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void start() throws IOException {
+        System.out.println("Start creating project \"" + projectName + "\"");
+
+        FileUtils.cleanOutputDir(new File(projectDirectory));
+        System.out.println("Copy project files into directory: " + projectDirectory);
+
+        if (unpackProject()) {
+            prepareFiles();
+            createScreen();
+            if (pluginMode) {
+                openProject();
+            }
+        } else {
+            System.out.println("Fail to unpack project");
+        }
+
     }
 
     private boolean unpackProject() throws IOException {
@@ -185,7 +216,6 @@ public class ProjectCreator {
                 "desktop/build.gradle",
                 "ios/robovm.properties",
                 "build.gradle"
-
         };
 
         for (String filepath : files) {
@@ -196,42 +226,48 @@ public class ProjectCreator {
                 src = src.replaceAll("\\$<PACKAGE_NAME>", packageName);
                 src = src.replaceAll("\\$<APP_NAME>", projectName);
 
-                Files.write(file.toPath(), src.getBytes(), StandardOpenOption.WRITE);
+                Files.write(file.toPath(), src.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
-    private void integrateFramework(String module) {
-        try {
-            File frameworkJar = new File(resources + "crossUIlib.jar");
-            File moduleLib = new File(projectDirectory + module + "/libs");
+    private void integrateFramework(String module) throws IOException {
+        File frameworkJar = new File(resources + "crossUIlib.jar");
+        File moduleLib = new File(projectDirectory + module + "/libs");
 
-            if (!moduleLib.exists()) moduleLib.mkdir();
+        if (!moduleLib.exists()) moduleLib.mkdir();
 
-            FileUtils.copyFileToDirectory(frameworkJar, moduleLib);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileUtils.copyFileToDirectory(frameworkJar, moduleLib);
     }
 
-
-
+    private void createScreen() {
+        if (pluginMode) {
+            ScreenDialog.showDialog(
+                    projectDirectory + "core/src/" + packagepath + "/screens",
+                    packageName + ".screens"
+            );
+        } else {
+            ClassCreator.createNewClass(
+                    projectDirectory + "core/src/" + packagepath + "/screens",
+                    packageName + ".screens",
+                    "StartScreen",
+                    "Main screen",
+                    "ScreenTemplate");
+        }
+    }
 
     private void openProject() {
         System.out.println("Open new project");
+        Project prj = null;
         try {
-            ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
+            prj = ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
+        } catch (IOException | JDOMException | InvalidDataException e) {
+
         }
 
         System.out.println("Creating project is done");
+
     }
 }

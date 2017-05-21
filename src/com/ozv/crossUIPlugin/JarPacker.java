@@ -52,7 +52,7 @@ public class JarPacker {
     public void run() throws IOException
     {
         if (!prepareFiles()) return;
-
+        pack();
 //        Manifest manifest = new Manifest();
 //        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 //        manifest.getMainAttributes().put(Attributes.Name.CLASS_PATH, temporaryDir);
@@ -60,6 +60,28 @@ public class JarPacker {
 //        add(new File(temporaryDir + "/com"), target);
 //        target.close();
     }
+
+
+    private void pack() {
+        String command = "jar cvf " + outputJar + "  -C " + temporaryDir + "/ .";
+
+        try {
+            System.out.println(command);
+            Process process = Runtime.getRuntime().exec(command);
+            process.waitFor();
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("jar packed successful");
+
+
+    }
+
+
+
+
 
     private void add(File source, JarOutputStream target) throws IOException
     {

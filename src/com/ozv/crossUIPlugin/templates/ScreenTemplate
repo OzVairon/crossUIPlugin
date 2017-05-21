@@ -1,9 +1,9 @@
 package $<PACKAGE_NAME>;
 
 import com.idp.engine.App;
-import com.idp.engine.ui.screens.IdpAppScreen;
+import com.idp.engine.ui.screens.AppScreen;
 
-public class $<CLASS_NAME> extends IdpAppScreen {
+public class $<CLASS_NAME> extends AppScreen {
 
 	public $<CLASS_NAME>() {
 		super("$<SCREEN_NAME>");
