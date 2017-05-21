@@ -63,7 +63,10 @@ public class ProjectDialog extends JDialog {
                 descriptor
         );
 
-        folderChooser.setText(System.getProperty("user.home") + "/Projects/CrossUIDemo/MyProj");
+
+
+        folderChooser.setText(System.getProperty("user.home"));
+        folderChooser.setEditable(false);
 
 
         DocumentListener fieldChecker = new DocumentListener() {
@@ -113,7 +116,10 @@ public class ProjectDialog extends JDialog {
 
     private void onOK() {
         try {
-
+            if (folderChooser.getText().equals(System.getProperty("user.home"))) {
+                alertLabel.setText("Set path to project folder");
+                return;
+            }
             File projectDir = new File(folderChooser.getText());
 
             if (projectDir.isDirectory()) {

@@ -77,7 +77,7 @@ public class ProjectCreator {
     public void start() throws IOException {
         System.out.println("Start creating project \"" + projectName + "\"");
 
-        FileUtils.cleanOutputDir(new File(projectDirectory));
+//        FileUtils.cleanOutputDir(new File(projectDirectory));
         System.out.println("Copy project files into directory: " + projectDirectory);
 
         if (unpackProject()) {
@@ -144,7 +144,7 @@ public class ProjectCreator {
 
         renameProjectFolder();
 
-        projectDirectory += projectName + "/";
+
         try {
             File macosdir = new File(projectDirectory + "__MACOSX");
             for (File s : macosdir.listFiles()) {
@@ -167,8 +167,23 @@ public class ProjectCreator {
         File project = new File(projectDirectory + "crossUI");
         File newProject = new File(projectDirectory + projectName);
 
+        if (newProject.exists()) {
+            int i = 0;
+            while (true) {
+                i++;
+                File temp = new File(projectDirectory + projectName + i);
+                if (!temp.exists()) {
+                    temp.mkdir();
+                    newProject = temp;
+                    break;
+                }
+            }
+            projectDirectory += projectName + i + "/";
+        } else {
+            projectDirectory += projectName + "/";
+        }
         if (!project.isDirectory()) {
-            project.mkdir();
+            project.mkd
         }
         FileUtils.copyDirectory(project, newProject);
         FileUtils.cleanOutputDir(project);

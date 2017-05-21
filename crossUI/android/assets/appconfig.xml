@@ -1,7 +1,7 @@
 <app package="$<PACKAGE_NAME>">
     <mainscreen name = "$<SCREEN_NAME>" />
     <colors>
-        <color name="MAIN"                  value="aa0000"/>
+        <color name="MAIN"                  value="333333"/>
         <color name="BACK"                  value="f3f3f3"/>
         <color name="TEXT_NAVBAR"           value="ffffff"/>
         <color name="ELEMENT_BACK"          value="ffffff"/>
@@ -15,7 +15,5 @@
         <font name="h1-bold"            path="SF-UI-Display-Bold.ttf"       size="16" color="000000"/>
         <font name="text"               path="SF-UI-Text-Regular.ttf"       size="14" color="666666"/>
         <font name="text_field"         path="SF-UI-Display-Light.ttf"      size="16" color="000000"/>
-        <font name="logo"               path="SF-UI-Display-Bold.ttf"       size="25" color="006fc0"/>
-        <font name="header"             path="SF-UI-Text-Bold.ttf"          size="12" color="666666"/>
     </fonts>
 </app>
