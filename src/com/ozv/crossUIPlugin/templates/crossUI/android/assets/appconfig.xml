@@ -1,5 +1,5 @@
 <app package="$<PACKAGE_NAME>">
-    <mainscreen name = "MainScreen" />
+    <mainscreen name = "$<SCREEN_NAME>" />
     <colors>
         <color name="MAIN"                  value="aa0000"/>
         <color name="BACK"                  value="f3f3f3"/>

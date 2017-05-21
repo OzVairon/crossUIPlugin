@@ -131,6 +131,7 @@ public class ProjectDialog extends JDialog {
                         try {
                             ProjectCreator.createProject(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
                             dispose();
+                            ProjectCreator.createScreenByWizard(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
                         } catch (IOException e1) {
 
                         } catch (Exception ex2) {
@@ -140,8 +141,6 @@ public class ProjectDialog extends JDialog {
                     }
                 });
                 tr.run();
-
-
             } else {
                 System.out.println(projectDir.getAbsolutePath());
                 System.out.println("it is not directory");
@@ -180,11 +179,8 @@ public class ProjectDialog extends JDialog {
     }
 
     private void checkFields() {
-
-
         String project = projectNameField.getText().trim();
         String pcg = packageNameField.getText().trim();
-
 
         if (project.length() == 0 && pcg.length() == 0) {
             alertLabel.setText("Enter the project information");

@@ -32,7 +32,7 @@ public class ProjectCreator {
 
     private String resources;
 
-    public ProjectCreator(String projectDirectory, String projectName, String packageName) {
+    private ProjectCreator(String projectDirectory, String projectName, String packageName) {
         this.projectDirectory = projectDirectory;
 
         this.packageName = packageName.replaceAll("[~\"#%&*:;<>?/{|} ,\\\\]" , "");
@@ -86,15 +86,14 @@ public class ProjectCreator {
 
         if (unpackProject()) {
             prepareFiles();
-            createScreen();
-            if (pluginMode) {
-                openProject();
+            if (!pluginMode) {
+                createScreen();
             }
         } else {
             System.out.println("Fail to unpack project");
         }
-
     }
+
 
     private boolean unpackProject() throws IOException {
         boolean result = false;
@@ -157,8 +156,6 @@ public class ProjectCreator {
             }
             macosdir.delete();
         } catch(Exception ex) {}
-
-
 
         //prepare modules
         String[] modules = {"core", "android", "desktop", "ios"};
@@ -242,32 +239,62 @@ public class ProjectCreator {
         FileUtils.copyFileToDirectory(frameworkJar, moduleLib);
     }
 
-    private void createScreen() {
+    public void createScreen() {
         if (pluginMode) {
-            ScreenDialog.showDialog(
-                    projectDirectory + "core/src/" + packagepath + "/screens",
-                    packageName + ".screens"
-            );
+
         } else {
             ClassCreator.createNewClass(
                     projectDirectory + "core/src/" + packagepath + "/screens",
                     packageName + ".screens",
-                    "StartScreen",
-                    "Main screen",
-                    "ScreenTemplate");
+                    "MainScreen",
+                    "MainScreen",
+                    "ScreenTemplate"
+            );
+        }
+    }
+
+    public static void createScreenByWizard(String projectDirectory, String projectName, String packageName) {
+
+        ProjectCreator p = new ProjectCreator(projectDirectory, projectName, packageName);
+
+        ScreenDialog sd = new ScreenDialog(
+                p.projectDirectory + "core/src/" + p.packagepath + "/screens",
+                p.packageName + ".screens"
+        ) {
+            @Override
+            public void createNewClassFile() {
+                try {
+                    super.createNewClassFile();
+                    p.setScreenToConfig(this.screenField.getText());
+                    p.openProject();
+                } catch (Exception ex) {}
+            }
+        };
+
+        sd.setTitle("Screen Wizard");
+        sd.pack();
+        sd.setLocationRelativeTo(sd.getParent());
+        sd.setVisible(true);
+    }
+
+    private void setScreenToConfig(String name) {
+        File file = new File(projectDirectory + "android/assets/appconfig.xml");
+        String src = null;
+        try {
+            src = new String(Files.readAllBytes(file.toPath()));
+            src = src.replaceAll("\\$<SCREEN_NAME>", name);
+            Files.write(file.toPath(), src.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private void openProject() {
         System.out.println("Open new project");
-        Project prj = null;
         try {
-            prj = ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
-        } catch (IOException | JDOMException | InvalidDataException e) {
-
-        }
-
-        System.out.println("Creating project is done");
+            Project prj = ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
+        } catch (IOException | JDOMException | InvalidDataException e) {}
+        //System.out.println("Creating project is done");
 
     }
 }

@@ -14,8 +14,8 @@ public class TestProjectCreation {
 
         boolean pPack = false;
         boolean fPack = false;
-        //pPack = true;
-        //fPack = true;
+//        pPack = true;
+//        fPack = true;
 
         if (fPack) {
             JarPacker.main(null);

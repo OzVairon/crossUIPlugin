@@ -10,10 +10,18 @@ public class ScreenDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField classField;
-    private JTextField screenField;
+    public JTextField screenField;
     private JLabel pathLabel;
 
-    public ScreenDialog() {
+    private String path = "";
+    private String packageName = "";
+
+    public ScreenDialog(String path, String packageName) {
+
+        this.path = path;
+        this.packageName = packageName;
+
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -61,26 +69,21 @@ public class ScreenDialog extends JDialog {
         dispose();
     }
 
-    public static void showDialog(String p, String pn) {
-
-        path = p;
-        packageName = pn;
-        ScreenDialog dialog = new ScreenDialog();
+    public static void showDialog(String path, String packageName) {
+        ScreenDialog dialog = new ScreenDialog(path, packageName);
         dialog.setTitle("Screen Wizard");
         dialog.pack();
         dialog.setLocationRelativeTo(dialog.getParent());
         dialog.setVisible(true);
     }
 
-    private void createNewClassFile() {
+    public void createNewClassFile() {
         String className = classField.getText();
         String screenName = screenField.getText();
-
         ClassCreator.createNewClass(path, packageName, className, screenName, "ScreenTemplate");
     }
 
-    private static String path = "";
-    private static String packageName = "";
+
 
 
 
