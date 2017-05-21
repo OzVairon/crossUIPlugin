@@ -201,7 +201,6 @@ public class ProjectDialog extends JDialog {
 
         buttonOK.setEnabled(true);
         alertLabel.setText(" ");
-
     }
 
 }

@@ -3,11 +3,12 @@ package com.ozv.crossUIPlugin.screenCreation;
 import com.ozv.crossUIPlugin.ClassCreator;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 
 public class ScreenDialog extends JDialog {
     private JPanel contentPane;
-    private JButton buttonOk;
     private JLabel alertLabel;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -59,6 +60,37 @@ public class ScreenDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+
+        DocumentListener fieldChecker = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkFields();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkFields();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkFields();
+            }
+        };
+
+        classField.getDocument().addDocumentListener(fieldChecker);
+        classField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (
+                        ((c < 'A') || (c > 'Z')) && ((c < 'a') || (c > 'z')) &&
+                                (c != KeyEvent.VK_BACK_SPACE) && (c != KeyEvent.VK_SPACE)
+                        ) {
+                    e.consume();  // ignore event
+                }
+            }
+        });
     }
 
     private void onOK() {
@@ -67,7 +99,7 @@ public class ScreenDialog extends JDialog {
         dispose();
     }
 
-    private void onCancel() {
+    protected void onCancel() {
         dispose();
     }
 
@@ -85,6 +117,18 @@ public class ScreenDialog extends JDialog {
         ClassCreator.createNewClass(path, packageName, className, screenName, "ScreenTemplate");
     }
 
+    private void checkFields() {
+        String cls = classField.getText().trim();
+
+        if (cls.length() == 0) {
+            alertLabel.setText("Enter the name of screen class");
+            buttonOK.setEnabled(false);
+            return;
+        }
+
+        buttonOK.setEnabled(true);
+        alertLabel.setText(" ");
+    }
 
 
 

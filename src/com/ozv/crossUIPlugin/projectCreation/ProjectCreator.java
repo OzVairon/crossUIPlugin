@@ -250,6 +250,7 @@ public class ProjectCreator {
     }
 
     public void createScreenByWizard() {
+        System.out.println("Open first screen Wizard");
 
         ScreenDialog sd = new ScreenDialog(
                 projectDirectory + "core/src/" + packagepath + "/screens",
@@ -262,6 +263,12 @@ public class ProjectCreator {
                     setScreenToConfig(this.classField.getText());
                     openProject();
                 } catch (Exception ex) {}
+            }
+
+            @Override
+            protected void onCancel() {
+                super.onCancel();
+                openProject();
             }
         };
 
