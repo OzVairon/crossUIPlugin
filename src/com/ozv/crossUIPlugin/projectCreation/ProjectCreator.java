@@ -161,8 +161,6 @@ public class ProjectCreator {
     private void prepareFiles() throws IOException {
 
         renameProjectFolder();
-
-
         try {
             File macosdir = new File(projectDirectory + "__MACOSX");
             for (File s : macosdir.listFiles()) {
