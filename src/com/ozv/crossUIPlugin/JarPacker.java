@@ -16,7 +16,7 @@ public class JarPacker {
 
     private String inputDir = "/Users/ozvairon/Projects/crossUI/CrossUIapp/core/build/classes/main/com";
 
-    private String temporaryDir = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/temp";
+    private String temporaryDir = "/Users/ozvairon/Projects/CrossUIPlugin/temp";
 
     private String outputJar = "/Users/ozvairon/Projects/CrossUIPlugin/src/com/ozv/crossUIPlugin/templates/crossUIlib.jar";
 

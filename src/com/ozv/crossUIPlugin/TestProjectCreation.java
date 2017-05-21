@@ -9,13 +9,13 @@ public class TestProjectCreation {
     public static void main(String[] args) {
 
         String dir = "/Users/ozvairon/Projects/CrossUIDemo/MyProj/";
-        String pcg = "com.user.....crossui";
+        String pcg = "com.user.crossui";
         String name = "NewCrossUI";
 
         boolean pPack = false;
         boolean fPack = false;
-//        pPack = true;
-//        fPack = true;
+        pPack = true;
+        fPack = true;
 
         if (fPack) {
             JarPacker.main(null);
@@ -23,7 +23,7 @@ public class TestProjectCreation {
 
 
         if (pPack) {
-            FrameworkPacker.main(null);
+            ZipFrameworkPacker.main(null);
         }
 
         if (!(pPack || fPack)) {

@@ -7,6 +7,8 @@ import java.awt.event.*;
 
 public class ScreenDialog extends JDialog {
     private JPanel contentPane;
+    private JButton buttonOk;
+    private JLabel alertLabel;
     private JButton buttonOK;
     private JButton buttonCancel;
     protected JTextField classField;
