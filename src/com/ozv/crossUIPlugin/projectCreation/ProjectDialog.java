@@ -112,10 +112,6 @@ public class ProjectDialog extends JDialog {
     }
 
     private void onOK() {
-        //todo: Field check
-
-        if (projectNameField.getText().isEmpty())
-
         try {
 
             File projectDir = new File(folderChooser.getText());
@@ -129,11 +125,13 @@ public class ProjectDialog extends JDialog {
                     @Override
                     public void run() {
                         try {
-                            ProjectCreator.createProject(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
-                            dispose();
-                            ProjectCreator.createScreenByWizard(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
-                        } catch (IOException e1) {
 
+                            ProjectCreator creator = new ProjectCreator(projectDir.getAbsolutePath(), projectNameField.getText(), packageNameField.getText());
+                            creator.start();
+                            dispose();
+                            creator.createScreenByWizard();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
                         } catch (Exception ex2) {
                             unlockEdit();
                             progressBar.setVisible(false);
@@ -142,8 +140,9 @@ public class ProjectDialog extends JDialog {
                 });
                 tr.run();
             } else {
-                System.out.println(projectDir.getAbsolutePath());
-                System.out.println("it is not directory");
+//                System.out.println(projectDir.getAbsolutePath());
+//                System.out.println("it is not directory");
+                alertLabel.setText("Invalid path to folder");
             }
         } catch (Exception ex) {ex.printStackTrace();}
 

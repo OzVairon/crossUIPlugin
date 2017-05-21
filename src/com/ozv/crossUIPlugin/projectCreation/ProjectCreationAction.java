@@ -13,7 +13,6 @@ public class ProjectCreationAction extends AnAction{
     }
 
     public void execute() {
-        System.out.println("PROJECT CREATED");
         ProjectDialog.showDialog();
     }
 }

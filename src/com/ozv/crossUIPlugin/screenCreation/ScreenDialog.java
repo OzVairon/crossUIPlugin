@@ -9,8 +9,8 @@ public class ScreenDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField classField;
-    public JTextField screenField;
+    protected JTextField classField;
+    private JTextField screenField;
     private JLabel pathLabel;
 
     private String path = "";

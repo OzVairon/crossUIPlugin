@@ -1,7 +1,6 @@
 package com.ozv.crossUIPlugin.projectCreation;
 
 import com.android.utils.FileUtils;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.util.ArrayUtil;
@@ -9,10 +8,7 @@ import com.ozv.crossUIPlugin.ClassCreator;
 import com.ozv.crossUIPlugin.screenCreation.ScreenDialog;
 import org.jdom.JDOMException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.Enumeration;
@@ -32,7 +28,7 @@ public class ProjectCreator {
 
     private String resources;
 
-    private ProjectCreator(String projectDirectory, String projectName, String packageName) {
+    public ProjectCreator(String projectDirectory, String projectName, String packageName) {
         this.projectDirectory = projectDirectory;
 
         this.packageName = packageName.replaceAll("[~\"#%&*:;<>?/{|} ,\\\\]" , "");
@@ -253,20 +249,18 @@ public class ProjectCreator {
         }
     }
 
-    public static void createScreenByWizard(String projectDirectory, String projectName, String packageName) {
-
-        ProjectCreator p = new ProjectCreator(projectDirectory, projectName, packageName);
+    public void createScreenByWizard() {
 
         ScreenDialog sd = new ScreenDialog(
-                p.projectDirectory + "core/src/" + p.packagepath + "/screens",
-                p.packageName + ".screens"
+                projectDirectory + "core/src/" + packagepath + "/screens",
+                packageName + ".screens"
         ) {
             @Override
             public void createNewClassFile() {
                 try {
                     super.createNewClassFile();
-                    p.setScreenToConfig(this.screenField.getText());
-                    p.openProject();
+                    setScreenToConfig(this.classField.getText());
+                    openProject();
                 } catch (Exception ex) {}
             }
         };
@@ -292,7 +286,7 @@ public class ProjectCreator {
     private void openProject() {
         System.out.println("Open new project");
         try {
-            Project prj = ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
+            ProjectManager.getInstance().loadAndOpenProject(projectDirectory + "build.gradle");
         } catch (IOException | JDOMException | InvalidDataException e) {}
         //System.out.println("Creating project is done");
 

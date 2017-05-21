@@ -81,7 +81,7 @@
                     <properties>
                       <minimumSize width="300" height="24"/>
                       <preferredSize width="300" height="24"/>
-                      <text value="NS"/>
+                      <text value="MainScreen"/>
                     </properties>
                   </component>
                 </children>
@@ -104,7 +104,7 @@
                     <properties>
                       <minimumSize width="300" height="24"/>
                       <preferredSize width="300" height="24"/>
-                      <text value="NS"/>
+                      <text value="Home screen"/>
                     </properties>
                   </component>
                 </children>
