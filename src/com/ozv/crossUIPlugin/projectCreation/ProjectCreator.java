@@ -183,7 +183,7 @@ public class ProjectCreator {
             projectDirectory += projectName + "/";
         }
         if (!project.isDirectory()) {
-            project.mkd
+            project.mkdir();
         }
         FileUtils.copyDirectory(project, newProject);
         FileUtils.cleanOutputDir(project);
