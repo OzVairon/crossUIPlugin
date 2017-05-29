@@ -1,5 +1,7 @@
 package com.ozv.crossUIPlugin;
 
+import com.android.utils.FileUtils;
+
 import java.io.*;
 
 /**
@@ -44,6 +46,18 @@ public class ResourceLoader {
     public static void setTempDir(String path) {
         tempDir = path + "temp/";
         if (new File(tempDir).mkdir()) ready = true;
+    }
+
+    public static boolean isReady() {
+        return ready;
+    }
+
+    public static void clear() {
+        try {
+            FileUtils.delete(new File(tempDir));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

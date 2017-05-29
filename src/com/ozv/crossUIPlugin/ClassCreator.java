@@ -14,6 +14,9 @@ public class ClassCreator {
 
         String template = "";
 
+        if (!ResourceLoader.isReady()) {
+            ResourceLoader.setTempDir(dir);
+        }
         String templatePath = ClassCreator.class.getResource("ClassCreator.class").getPath();
         templatePath = templatePath.substring(0, templatePath.lastIndexOf('/')) + "/templates/" + templateName;
         checkDir(dir);
@@ -34,6 +37,7 @@ public class ClassCreator {
             e.printStackTrace();
         }
 
+        ResourceLoader.clear();
 
     }
 

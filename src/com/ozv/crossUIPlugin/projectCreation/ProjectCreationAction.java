@@ -9,10 +9,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 public class ProjectCreationAction extends AnAction{
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        execute();
-    }
-
-    public void execute() {
         ProjectDialog.showDialog();
     }
 }
