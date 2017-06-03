@@ -10,7 +10,7 @@ public class $<CLASS_NAME> extends AppScreen {
 	}
 
 	@Override
-	protected void init() {
+	public void init() {
 		super.init();
         //add your code here
 	}

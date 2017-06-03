@@ -14,8 +14,10 @@ public class TestProjectCreation {
 
         boolean pPack = false;
         boolean fPack = false;
+        boolean lib = false;
         pPack = true;
         fPack = true;
+        lib = true;
 
         if (fPack) {
             JarPacker.main(null);
@@ -24,6 +26,10 @@ public class TestProjectCreation {
 
         if (pPack) {
             ZipFrameworkPacker.main(null);
+        }
+
+        if (lib) {
+            LibraryInjector.main(null);
         }
 
         if (!(pPack || fPack)) {
